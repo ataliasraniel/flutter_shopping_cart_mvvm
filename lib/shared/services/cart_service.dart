@@ -8,12 +8,13 @@ class CartService with ChangeNotifier {
 
   List<CartItem> get items => List.unmodifiable(_items);
   final _itemSingleLimit = 10;
+
   void addItem(CartItem item) {
     final index = _items.indexWhere((element) => element.productId == item.productId);
     if (index != -1) {
       final existingItem = _items[index];
       if (existingItem.quantity + item.quantity <= _itemSingleLimit) {
-        _items[index] = CartItem(productId: existingItem.productId, quantity: existingItem.quantity + item.quantity);
+        _items[index] = CartItem(productId: existingItem.productId, quantity: existingItem.quantity + item.quantity, product: existingItem.product);
       }
     } else {
       _items.add(item);
@@ -27,7 +28,7 @@ class CartService with ChangeNotifier {
       final existingItem = _items[index];
       final newQuantity = existingItem.quantity - item.quantity;
       if (newQuantity > 0) {
-        _items[index] = CartItem(productId: existingItem.productId, quantity: newQuantity);
+        _items[index] = CartItem(productId: existingItem.productId, quantity: newQuantity, product: existingItem.product);
       } else {
         _items.removeAt(index);
       }

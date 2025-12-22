@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter_shopping_cart_mvvm/modules/cart/cart_view_model.dart';
 import 'package:flutter_shopping_cart_mvvm/modules/home/home_view_model.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/services/cart_service.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/services/product_api.dart';
@@ -12,7 +13,8 @@ void setupInjections() async {
   injector.registerSingleton<CartService>(CartService());
   //factories
   injector.registerFactory(() => HomeViewModel(injector<ProductApi>(), injector<CartService>()));
+  injector.registerFactory(() => CartViewModel(injector<CartService>()));
 
   await injector.allReady();
-  log("All ready.");
+  log("Registrations done.");
 }
