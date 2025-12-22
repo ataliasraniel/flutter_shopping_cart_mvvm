@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/di/injection_service.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/navigation/app_routes.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/theme/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupInjections();
   runApp(const MainApp());
 }
 
