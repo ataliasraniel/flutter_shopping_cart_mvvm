@@ -55,13 +55,7 @@ class _HomeviewState extends State<Homeview> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(right: kSmallSize),
-                        // child: ChoiceChip(
-                        //   label: Text(_viewModel.categories[index]),
-                        //   selected: _viewModel.categories[index] == _viewModel.getSelectedCategory,
-                        //   onSelected: (bool selected) {
-                        //     _viewModel.selectProductsByCategory(_viewModel.categories[index]);
-                        //   },
-                        // ),
+
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: kMediumSize, vertical: kSmallSize),
                           decoration: BoxDecoration(
@@ -92,7 +86,6 @@ class _HomeviewState extends State<Homeview> {
                   child: Column(
                     crossAxisAlignment: .start,
                     children: <Widget>[
-                      const Text('Veja nossos produtos'),
                       SizedBox(height: kMediumSize),
                       if (_viewModel.state == ScreenState.loading)
                         const Center(child: CircularProgressIndicator())

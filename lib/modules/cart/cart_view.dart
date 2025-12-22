@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shopping_cart_mvvm/modules/cart/cart_view_model.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/di/injection_service.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/theme/app_colors.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/theme/app_spacing.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/utils/formatters/money_formatter_utils.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/widgets/buttons/primary_button.dart';
@@ -18,7 +19,7 @@ class _CartViewState extends State<CartView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Carrinho')),
+      appBar: AppBar(title: const Text('Carrinho'), centerTitle: true),
       body: ListenableBuilder(
         listenable: viewModel,
         builder: (context, child) {
@@ -52,7 +53,10 @@ class _CartViewState extends State<CartView> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(MoneyFormatterUtils.format(subtotal), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                                      Text(
+                                        MoneyFormatterUtils.format(subtotal),
+                                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textSecondary),
+                                      ),
 
                                       Container(
                                         margin: const EdgeInsets.only(left: kMediumSize),
@@ -101,7 +105,7 @@ class _CartViewState extends State<CartView> {
                                             Text('${item.quantity}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
 
                                             IconButton(
-                                              icon: const Icon(Icons.add_circle_outline),
+                                              icon: const Icon(Icons.add_circle_outline, color: AppColors.primary),
                                               onPressed: () {
                                                 viewModel.addProductToCart(item.product);
                                               },
@@ -123,13 +127,14 @@ class _CartViewState extends State<CartView> {
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         'Subtotal: ${MoneyFormatterUtils.format(viewModel.subtotal)}',
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: kMediumSize),
-                      PrimaryButton(label: 'Finalizar Pedido', onPressed: () {}),
+                      PrimaryButton(label: 'Finalizar Pedido', isFullWidth: true, onPressed: () {}),
                     ],
                   ),
                 ),
