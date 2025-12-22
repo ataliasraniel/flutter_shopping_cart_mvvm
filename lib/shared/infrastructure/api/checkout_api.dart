@@ -8,7 +8,7 @@ class CheckoutApi {
     await Future.delayed(const Duration(seconds: 2));
     final random = DateTime.now().millisecondsSinceEpoch;
     if (random % 2 == 0) {
-      throw Exception('Estamos fora do ar, desculpe =(.');
+      throw Exception(_mapErrorCodeToMessage(500));
     }
     final mockedResponse = {
       'message': 'Checkout realizado com sucesso!',
@@ -28,5 +28,18 @@ class CheckoutApi {
       },
     };
     return CheckoutResponseModel.fromJson(mockedResponse);
+  }
+
+  String _mapErrorCodeToMessage(int code) {
+    switch (code) {
+      case 400:
+        return 'Requisição inválida. Por favor, verifique os dados enviados.';
+      case 401:
+        return 'Não autorizado. Por favor, faça login novamente.';
+      case 500:
+        return 'Estamos enfrentando problemas técnicos =(';
+      default:
+        return 'Ocorreu um erro desconhecido. Código: $code';
+    }
   }
 }

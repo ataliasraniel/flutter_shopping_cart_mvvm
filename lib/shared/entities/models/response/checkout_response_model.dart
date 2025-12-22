@@ -1,5 +1,3 @@
-import 'package:flutter_shopping_cart_mvvm/shared/entities/models/cart_item.dart';
-
 class CheckoutResponseModel {
   final String message;
   final bool success;
