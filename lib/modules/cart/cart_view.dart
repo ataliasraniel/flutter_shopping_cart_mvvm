@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shopping_cart_mvvm/modules/cart/cart_view_model.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/di/injection_service.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/navigation/app_routes.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/theme/app_colors.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/theme/app_spacing.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/utils/formatters/money_formatter_utils.dart';
@@ -15,6 +16,32 @@ class CartView extends StatefulWidget {
 
 class _CartViewState extends State<CartView> {
   final CartViewModel viewModel = injector.get();
+  @override
+  void initState() {
+    super.initState();
+    viewModel.addListener(() {
+      if (viewModel.checkoutState == CheckoutState.success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Pedido realizado com sucesso!'), duration: Duration(seconds: 2), backgroundColor: Colors.green),
+        );
+        Navigator.popAndPushNamed(context, AppRoutes.orderCompleted);
+      } else if (viewModel.checkoutState == CheckoutState.error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao finalizar pedido: ${viewModel.errorMessage}'),
+            duration: const Duration(seconds: 2),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +161,14 @@ class _CartViewState extends State<CartView> {
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: kMediumSize),
-                      PrimaryButton(label: 'Finalizar Pedido', isFullWidth: true, onPressed: () {}),
+                      PrimaryButton(
+                        label: 'Finalizar Pedido',
+                        isFullWidth: true,
+                        isLoading: viewModel.checkoutState == CheckoutState.loading,
+                        onPressed: () {
+                          viewModel.checkout();
+                        },
+                      ),
                     ],
                   ),
                 ),

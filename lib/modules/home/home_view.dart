@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shopping_cart_mvvm/modules/home/home_view_model.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/di/injection_service.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/product.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/navigation/app_routes.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/theme/app_spacing.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/utils/formatters/money_formatter_utils.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/widgets/core/cart_badge.dart';
