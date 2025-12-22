@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
     primarySwatch: Colors.grey,
+    scaffoldBackgroundColor: Colors.white,
     brightness: Brightness.light,
     visualDensity: VisualDensity.adaptivePlatformDensity,
+    appBarTheme: AppBarTheme(backgroundColor: Colors.white, foregroundColor: Colors.black, elevation: 0),
     chipTheme: ChipThemeData(
       backgroundColor: Colors.white,
       selectedColor: Color(0xFF2f3542),
