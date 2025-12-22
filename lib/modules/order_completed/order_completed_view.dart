@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/entities/models/response/checkout_response_model.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/widgets/buttons/primary_button.dart';
 
 class OrderCompletedView extends StatelessWidget {
-  const OrderCompletedView({super.key});
+  final CheckoutResponseModel checkoutResponse;
+  const OrderCompletedView({super.key, required this.checkoutResponse});
 
   @override
   Widget build(BuildContext context) {

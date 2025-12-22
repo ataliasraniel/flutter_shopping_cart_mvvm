@@ -8,7 +8,7 @@ class CheckoutApi {
     await Future.delayed(const Duration(seconds: 2));
     final random = DateTime.now().millisecondsSinceEpoch;
     if (random % 2 == 0) {
-      return Future.error('Estamos fora do ar, desculpe =(.');
+      throw Exception('Estamos fora do ar, desculpe =(.');
     }
     return CheckoutResponseModel(message: 'Checkout realizado com sucesso!', success: true, orderId: random);
   }
