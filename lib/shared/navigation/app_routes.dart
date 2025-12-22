@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shopping_cart_mvvm/modules/home/home_screen.dart';
+import 'package:flutter_shopping_cart_mvvm/modules/home/home_view.dart';
 
 class AppRoutes {
   static const String home = '/home';

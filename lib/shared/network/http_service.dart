@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 
-class HttpClient {
+class HttpService {
   final Dio _dio = Dio(BaseOptions(baseUrl: 'https://fakestoreapi.com', contentType: 'application/json', responseType: ResponseType.json));
   Dio get client => _dio;
 
-  HttpClient() {
+  HttpService() {
     _dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
   }
 
