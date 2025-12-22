@@ -6,7 +6,10 @@ import 'package:flutter_shopping_cart_mvvm/shared/widgets/buttons/primary_button
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  const ProductCard({super.key, required this.product});
+  final int quantity;
+  final VoidCallback onAddToCart;
+  final VoidCallback onDecreseQuantity;
+  const ProductCard({super.key, required this.product, required this.onAddToCart, required this.quantity, required this.onDecreseQuantity});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +63,35 @@ class ProductCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: kMediumSize),
-          PrimaryButton(label: 'Adicionar ao carrinho', onPressed: () {}),
+          if (quantity > 0) ...[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: IconButton(
+                    onPressed: () {
+                      onDecreseQuantity();
+                    },
+                    icon: const Icon(Icons.remove, color: Colors.orange),
+                  ),
+                ),
+                Text('$quantity', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Expanded(
+                  child: IconButton(
+                    onPressed: () {
+                      onAddToCart();
+                    },
+                    icon: const Icon(Icons.add, color: Colors.orange),
+                  ),
+                ),
+              ],
+            ),
+          ] else
+            PrimaryButton(
+              label: 'Adicionar ao carrinho',
+              onPressed: () {
+                onAddToCart();
+              },
+            ),
         ],
       ),
     );

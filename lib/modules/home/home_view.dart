@@ -4,6 +4,7 @@ import 'package:flutter_shopping_cart_mvvm/shared/di/injection_service.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/product.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/theme/app_spacing.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/utils/formatters/money_formatter_utils.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/widgets/core/cart_badge.dart';
 
 import 'components/product_card.dart';
 
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
       listenable: _viewModel,
       builder: (_, value) {
         return Scaffold(
+          appBar: AppBar(title: const Text('Atalia\'s Store'), actions: [GlobalCartBadge()]),
           body: Padding(
             padding: kDefaultPadding,
             child: Column(
@@ -43,15 +45,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 50,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: _viewModel.getCategories.length,
+                    itemCount: _viewModel.categories.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: kSmallSize),
                         child: ChoiceChip(
-                          label: Text(_viewModel.getCategories[index]),
-                          selected: _viewModel.getCategories[index] == _viewModel.getSelectedCategory,
+                          label: Text(_viewModel.categories[index]),
+                          selected: _viewModel.categories[index] == _viewModel.getSelectedCategory,
                           onSelected: (bool selected) {
-                            _viewModel.selectCategory(_viewModel.getCategories[index]);
+                            _viewModel.selectProductsByCategory(_viewModel.categories[index]);
                           },
                         ),
                       );
@@ -76,12 +78,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisCount: 2,
                               crossAxisSpacing: kMediumSize,
                               mainAxisSpacing: kMediumSize,
-                              childAspectRatio: 0.6,
+                              childAspectRatio: 0.5,
                             ),
                             itemCount: _viewModel.products.length,
                             itemBuilder: (context, index) {
                               final product = _viewModel.products[index];
-                              return ProductCard(product: product);
+                              return ProductCard(
+                                product: product,
+                                quantity: _viewModel.itemQuantityInCart(product.id),
+                                onDecreseQuantity: () {
+                                  _viewModel.decreaseProductFromCart(product);
+                                },
+                                onAddToCart: () {
+                                  _viewModel.addProductToCart(product);
+                                },
+                              );
                             },
                           ),
                         ),
