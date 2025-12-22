@@ -31,7 +31,7 @@ class HomeViewModel with ChangeNotifier {
     _state = ScreenState.loading;
     notifyListeners();
     try {
-      final allProducts = await _productApi.getAllProducts();
+      final allProducts = await _productApi.fetchProducts();
       _products.clear();
       if (_selectedCategory == 'All') {
         _products.addAll(allProducts);

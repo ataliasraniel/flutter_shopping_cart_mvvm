@@ -1,15 +1,28 @@
 import 'package:dio/dio.dart';
 
 class HttpService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: 'https://fakestoreapi.com', contentType: 'application/json', responseType: ResponseType.json));
+  late final Dio _dio;
   Dio get client => _dio;
 
-  HttpService() {
+  HttpService({String baseUrl = 'https://fakestoreapi.com'}) {
+    _dio = Dio(BaseOptions(baseUrl: baseUrl, contentType: 'application/json'));
     _dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
   }
 
   Future<T> get<T>(String path, {Map<String, dynamic>? queryParameters, Options? options}) async {
-    final response = await _dio.get<T>(path, queryParameters: queryParameters, options: options);
-    return response.data as T;
+    try {
+      final response = await _dio.get<T>(path, queryParameters: queryParameters, options: options);
+      if (response.data == null) {
+        throw StateError('Received null response data for GET $path');
+      }
+      return response.data as T;
+    } on DioException catch (e) {
+      throw DioException(requestOptions: e.requestOptions, response: e.response, type: e.type, error: 'GET $path failed: ${e.message}');
+    } catch (e) {
+      throw DioException(
+        requestOptions: RequestOptions(path: path),
+        error: 'Unexpected error during GET $path: $e',
+      );
+    }
   }
 }
