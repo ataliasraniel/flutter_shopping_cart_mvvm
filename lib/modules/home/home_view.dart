@@ -8,14 +8,14 @@ import 'package:flutter_shopping_cart_mvvm/shared/widgets/core/cart_badge.dart';
 
 import 'components/product_card.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class Homeview extends StatefulWidget {
+  const Homeview({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<Homeview> createState() => _HomeviewState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeviewState extends State<Homeview> {
   final HomeViewModel _viewModel = injector.get();
 
   @override
@@ -91,6 +91,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 onAddToCart: () {
                                   _viewModel.addProductToCart(product);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('${product.title} adicionado ao carrinho'),
+                                      duration: const Duration(seconds: 1),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
                                 },
                               );
                             },

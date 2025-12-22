@@ -56,12 +56,12 @@ class HomeViewModel with ChangeNotifier {
   }
 
   void addProductToCart(Product product) {
-    _cartService.addItem(CartItem(productId: product.id, quantity: 1));
+    _cartService.addItem(CartItem(productId: product.id, quantity: 1, product: product));
     notifyListeners();
   }
 
   void decreaseProductFromCart(Product product) {
-    _cartService.decreaseItemByQuantity(CartItem(productId: product.id, quantity: 1));
+    _cartService.decreaseItemByQuantity(CartItem(productId: product.id, quantity: 1, product: product));
     notifyListeners();
   }
 
@@ -70,7 +70,14 @@ class HomeViewModel with ChangeNotifier {
   }
 
   int itemQuantityInCart(int productId) {
-    final item = cartItems.firstWhere((item) => item.productId == productId, orElse: () => CartItem(productId: productId, quantity: 0));
+    final item = cartItems.firstWhere(
+      (item) => item.productId == productId,
+      orElse: () => CartItem(
+        productId: productId,
+        quantity: 0,
+        product: Product(id: productId, title: '', price: 0, description: '', category: '', image: '', rating: Rating(rate: 0, count: 0)),
+      ),
+    );
     return item.quantity;
   }
 }
