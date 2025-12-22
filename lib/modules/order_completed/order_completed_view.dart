@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/response/checkout_response_model.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/theme/app_spacing.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/utils/formatters/money_formatter_utils.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/widgets/buttons/primary_button.dart';
 
 class OrderCompletedView extends StatelessWidget {
@@ -19,13 +20,14 @@ class OrderCompletedView extends StatelessWidget {
             crossAxisAlignment: .start,
             children: <Widget>[
               Text('Seu pedido - ${checkoutResponse.orderId}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
-
+              const SizedBox(height: kLargeSize),
               Expanded(
                 child: ListView.builder(
                   itemCount: checkoutResponse.data.items.length,
                   itemBuilder: (_, index) {
                     final item = checkoutResponse.data.items[index];
                     return Container(
+                      margin: const EdgeInsets.only(bottom: kMediumSize),
                       child: Row(
                         children: <Widget>[
                           Image.network(item.image, width: 60, height: 60, fit: BoxFit.cover),
@@ -41,7 +43,7 @@ class OrderCompletedView extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'R\$ ${(item.price * item.quantity).toStringAsFixed(2)}',
+                            MoneyFormatterUtils.format((item.price * item.quantity)),
                             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                           ),
                         ],
@@ -56,8 +58,6 @@ class OrderCompletedView extends StatelessWidget {
                 spacing: kTinySize,
 
                 children: <Widget>[
-                  //resumo do pedido>subtotal,frete, total
-                  //Resumo do pedido
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Resumo do Pedido', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
@@ -90,7 +90,13 @@ class OrderCompletedView extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: kLargeSize),
-              PrimaryButton(isFullWidth: true, label: 'Novo Pedido', onPressed: () {}),
+              PrimaryButton(
+                isFullWidth: true,
+                label: 'Novo Pedido',
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
         ),

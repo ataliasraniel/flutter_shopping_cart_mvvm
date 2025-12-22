@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/cart_item.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/product.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/response/checkout_response_model.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/mixins/api_error_handler_mixin.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/services/cart_service.dart';
 
 enum CheckoutState { initial, loading, success, error }
 
-class CartViewModel with ChangeNotifier {
+class CartViewModel with ChangeNotifier, ApiErrorHandlerMixin {
   final CartService _cartService;
-  CartViewModel(this._cartService);
+  CartViewModel(this._cartService) {
+    _cartService.addListener(notifyListeners);
+  }
 
   CheckoutState _checkoutState = CheckoutState.initial;
   String _errorMessage = '';
@@ -26,22 +29,18 @@ class CartViewModel with ChangeNotifier {
 
   void addProductToCart(Product product) {
     _cartService.addItem(CartItem(productId: product.id, quantity: 1, product: product));
-    notifyListeners();
   }
 
   void decreaseProductFromCart(Product product) {
     _cartService.decreaseItemByQuantity(CartItem(productId: product.id, quantity: 1, product: product));
-    notifyListeners();
   }
 
   void removeItemFromCart(int productId) {
     _cartService.removeItem(productId);
-    notifyListeners();
   }
 
   void clearCart() {
     _cartService.clearCart();
-    notifyListeners();
   }
 
   Future<bool> checkout() async {
@@ -55,9 +54,15 @@ class CartViewModel with ChangeNotifier {
       return true;
     } catch (e) {
       _checkoutState = CheckoutState.error;
-      _errorMessage = e.toString();
+      _errorMessage = handleApiError(e);
       notifyListeners();
       return false;
     }
+  }
+
+  @override
+  void dispose() {
+    _cartService.removeListener(notifyListeners);
+    super.dispose();
   }
 }

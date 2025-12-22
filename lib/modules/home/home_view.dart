@@ -39,10 +39,8 @@ class _HomeviewState extends State<Homeview> {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Lojinha do Atalias', style: TextStyle(fontWeight: FontWeight.bold)),
-            actions: [
-              GlobalCartBadge(),
-              IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-            ],
+            actionsPadding: const EdgeInsets.only(right: kMediumSize),
+            actions: [GlobalCartBadge()],
           ),
           body: Padding(
             padding: kDefaultPadding,
@@ -60,7 +58,7 @@ class _HomeviewState extends State<Homeview> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: kMediumSize, vertical: kSmallSize),
                           decoration: BoxDecoration(
-                            color: _viewModel.categories[index] == _viewModel.getSelectedCategory ? Colors.black : Colors.grey[300],
+                            color: _viewModel.categories[index] == _viewModel.selectedCategory ? Colors.black : Colors.grey[300],
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: InkWell(
@@ -71,7 +69,7 @@ class _HomeviewState extends State<Homeview> {
                               child: Text(
                                 _viewModel.categories[index],
                                 style: TextStyle(
-                                  color: _viewModel.categories[index] == _viewModel.getSelectedCategory ? Colors.white : Colors.black,
+                                  color: _viewModel.categories[index] == _viewModel.selectedCategory ? Colors.white : Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

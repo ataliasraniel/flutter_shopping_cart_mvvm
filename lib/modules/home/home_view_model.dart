@@ -9,7 +9,9 @@ enum ScreenState { initial, loading, loaded, error }
 class HomeViewModel with ChangeNotifier {
   final ProductApi _productApi;
   final CartService _cartService;
-  HomeViewModel(this._productApi, this._cartService);
+  HomeViewModel(this._productApi, this._cartService) {
+    _cartService.addListener(notifyListeners);
+  }
   ScreenState _state = ScreenState.initial;
   final List<Product> _products = [];
   final List<String> _categories = [];
@@ -17,7 +19,7 @@ class HomeViewModel with ChangeNotifier {
 
   List<CartItem> get cartItems => _cartService.items;
 
-  String get getSelectedCategory => _selectedCategory;
+  String get selectedCategory => _selectedCategory;
   ScreenState get state => _state;
   List<String> get categories => _categories;
   List<Product> get products => _products;
@@ -25,6 +27,10 @@ class HomeViewModel with ChangeNotifier {
   void selectCategory(String category) {
     _selectedCategory = category;
     notifyListeners();
+  }
+
+  void clearCart() {
+    _cartService.clearCart();
   }
 
   Future<void> fetchProducts() async {
@@ -50,19 +56,17 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void selectProductsByCategory(String category) async {
+  Future<void> selectProductsByCategory(String category) async {
     _selectedCategory = category;
     await fetchProducts();
   }
 
   void addProductToCart(Product product) {
     _cartService.addItem(CartItem(productId: product.id, quantity: 1, product: product));
-    notifyListeners();
   }
 
   void decreaseProductFromCart(Product product) {
     _cartService.decreaseItemByQuantity(CartItem(productId: product.id, quantity: 1, product: product));
-    notifyListeners();
   }
 
   bool hasCurrentItemInCart(int productId) {
@@ -79,5 +83,11 @@ class HomeViewModel with ChangeNotifier {
       ),
     );
     return item.quantity;
+  }
+
+  @override
+  void dispose() {
+    _cartService.removeListener(notifyListeners);
+    super.dispose();
   }
 }

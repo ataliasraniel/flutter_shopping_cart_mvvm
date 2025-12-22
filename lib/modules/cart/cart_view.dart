@@ -73,7 +73,32 @@ class _CartViewState extends State<CartView> {
         listenable: viewModel,
         builder: (context, child) {
           if (viewModel.cartItems.isEmpty) {
-            return const Center(child: Text('Seu carrinho está vazio'));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(height: kLargeSize),
+                  Icon(Icons.shopping_cart_outlined, size: 100, color: AppColors.textSecondary),
+                  const SizedBox(height: kMediumSize),
+                  const Text('Seu carrinho está vazio', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: kSmallSize),
+                  const Text(
+                    'Adicione produtos ao seu carrinho para começar a comprar.',
+                    style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: kLargeSize),
+                  PrimaryButton(
+                    label: 'Voltar às compras',
+                    isFullWidth: false,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            );
           }
 
           return Padding(
@@ -190,6 +215,17 @@ class _CartViewState extends State<CartView> {
                         onPressed: () {
                           viewModel.checkout();
                         },
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          viewModel.clearCart();
+                        },
+                        child: const Center(
+                          child: Text(
+                            'Limpar Carrinho',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary),
+                          ),
+                        ),
                       ),
                     ],
                   ),
