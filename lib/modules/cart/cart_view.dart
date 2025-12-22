@@ -19,26 +19,48 @@ class _CartViewState extends State<CartView> {
   @override
   void initState() {
     super.initState();
-    viewModel.addListener(() {
-      if (viewModel.checkoutState == CheckoutState.success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Pedido realizado com sucesso!'), duration: Duration(seconds: 2), backgroundColor: Colors.green),
-        );
-        Navigator.popAndPushNamed(context, AppRoutes.orderCompleted);
-      } else if (viewModel.checkoutState == CheckoutState.error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erro ao finalizar pedido: ${viewModel.errorMessage}'),
-            duration: const Duration(seconds: 2),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    });
+    _setupViewModelListener();
+  }
+
+  void _setupViewModelListener() {
+    viewModel.addListener(_handleViewModelChanges);
+  }
+
+  void _handleViewModelChanges() {
+    if (!mounted) return;
+
+    switch (viewModel.checkoutState) {
+      case CheckoutState.success:
+        _handleCheckoutSuccess();
+        break;
+      case CheckoutState.error:
+        _handleCheckoutError();
+        break;
+      default:
+        break;
+    }
+  }
+
+  void _handleCheckoutSuccess() {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Pedido realizado com sucesso!'), duration: Duration(seconds: 2), backgroundColor: Colors.green));
+    Navigator.popAndPushNamed(context, AppRoutes.orderCompleted, arguments: viewModel.checkoutResponse);
+  }
+
+  void _handleCheckoutError() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Erro ao finalizar pedido: ${viewModel.errorMessage}'),
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
   void dispose() {
+    viewModel.removeListener(_handleViewModelChanges);
     viewModel.dispose();
     super.dispose();
   }

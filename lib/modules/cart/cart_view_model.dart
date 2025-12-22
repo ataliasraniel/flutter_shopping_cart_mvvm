@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/cart_item.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/product.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/entities/models/response/checkout_response_model.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/services/cart_service.dart';
 
 enum CheckoutState { initial, loading, success, error }
@@ -11,6 +12,7 @@ class CartViewModel with ChangeNotifier {
 
   CheckoutState _checkoutState = CheckoutState.initial;
   String _errorMessage = '';
+  CheckoutResponseModel? checkoutResponse;
 
   List<CartItem> get cartItems => _cartService.items;
   CheckoutState get checkoutState => _checkoutState;
@@ -47,7 +49,7 @@ class CartViewModel with ChangeNotifier {
     notifyListeners();
 
     try {
-      await _cartService.proceedToCheckout();
+      checkoutResponse = await _cartService.proceedToCheckout();
       _checkoutState = CheckoutState.success;
       clearCart();
       notifyListeners();
