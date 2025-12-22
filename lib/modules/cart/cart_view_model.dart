@@ -47,8 +47,7 @@ class CartViewModel with ChangeNotifier {
     notifyListeners();
 
     try {
-      await Future.delayed(const Duration(seconds: 1));
-
+      _cartService.proceedToCheckout();
       _checkoutState = CheckoutState.success;
       clearCart();
       notifyListeners();

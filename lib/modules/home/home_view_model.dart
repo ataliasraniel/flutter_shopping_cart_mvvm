@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/cart_item.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/product.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/services/cart_service.dart';
-import 'package:flutter_shopping_cart_mvvm/shared/services/product_api.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/infrastructure/api/product_api.dart';
 
 enum ScreenState { initial, loading, loaded, error }
 

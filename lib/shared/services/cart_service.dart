@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/entities/models/response/checkout_response_model.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/infrastructure/api/checkout_api.dart';
 
 import '../entities/models/cart_item.dart';
 
 class CartService with ChangeNotifier {
+  final CheckoutApi _checkoutApi;
+  CartService(this._checkoutApi);
   final List<CartItem> _items = [];
   int get itemsCount => _items.length;
 
@@ -44,5 +48,9 @@ class CartService with ChangeNotifier {
   void clearCart() {
     _items.clear();
     notifyListeners();
+  }
+
+  Future<CheckoutResponseModel> proceedToCheckout() async {
+    return await _checkoutApi.processCheckout(_items);
   }
 }
