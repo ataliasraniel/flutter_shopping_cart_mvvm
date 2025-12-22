@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HttpService {
   late final Dio _dio;
   Dio get client => _dio;
 
-  HttpService({String baseUrl = 'https://fakestoreapi.com'}) {
-    _dio = Dio(BaseOptions(baseUrl: baseUrl, contentType: 'application/json'));
+  HttpService({String? baseUrl}) {
+    final apiBaseUrl = baseUrl ?? dotenv.env['API_BASE_URL'] ?? 'https://fakestoreapi.com';
+    _dio = Dio(BaseOptions(baseUrl: apiBaseUrl, contentType: 'application/json'));
     _dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
   }
 
