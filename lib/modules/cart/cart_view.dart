@@ -3,6 +3,7 @@ import 'package:flutter_shopping_cart_mvvm/modules/cart/cart_view_model.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/di/injection_service.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/theme/app_spacing.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/utils/formatters/money_formatter_utils.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/widgets/buttons/primary_button.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -117,6 +118,19 @@ class _CartViewState extends State<CartView> {
                         ),
                       );
                     },
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        'Subtotal: ${MoneyFormatterUtils.format(viewModel.subtotal)}',
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: kMediumSize),
+                      PrimaryButton(label: 'Finalizar Pedido', onPressed: () {}),
+                    ],
                   ),
                 ),
               ],

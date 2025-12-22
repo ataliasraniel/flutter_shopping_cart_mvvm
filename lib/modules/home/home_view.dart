@@ -36,25 +36,52 @@ class _HomeviewState extends State<Homeview> {
       listenable: _viewModel,
       builder: (_, value) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Atalia\'s Store'), actions: [GlobalCartBadge()]),
+          appBar: AppBar(
+            title: const Text('Lojinha do Atalias', style: TextStyle(fontWeight: FontWeight.bold)),
+            actions: [
+              GlobalCartBadge(),
+              IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+            ],
+          ),
           body: Padding(
             padding: kDefaultPadding,
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 50,
+                  height: 40,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: _viewModel.categories.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: kSmallSize),
-                        child: ChoiceChip(
-                          label: Text(_viewModel.categories[index]),
-                          selected: _viewModel.categories[index] == _viewModel.getSelectedCategory,
-                          onSelected: (bool selected) {
-                            _viewModel.selectProductsByCategory(_viewModel.categories[index]);
-                          },
+                        padding: const EdgeInsets.only(right: kSmallSize),
+                        // child: ChoiceChip(
+                        //   label: Text(_viewModel.categories[index]),
+                        //   selected: _viewModel.categories[index] == _viewModel.getSelectedCategory,
+                        //   onSelected: (bool selected) {
+                        //     _viewModel.selectProductsByCategory(_viewModel.categories[index]);
+                        //   },
+                        // ),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: kMediumSize, vertical: kSmallSize),
+                          decoration: BoxDecoration(
+                            color: _viewModel.categories[index] == _viewModel.getSelectedCategory ? Colors.black : Colors.grey[300],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              _viewModel.selectProductsByCategory(_viewModel.categories[index]);
+                            },
+                            child: Center(
+                              child: Text(
+                                _viewModel.categories[index],
+                                style: TextStyle(
+                                  color: _viewModel.categories[index] == _viewModel.getSelectedCategory ? Colors.white : Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       );
                     },
@@ -73,13 +100,7 @@ class _HomeviewState extends State<Homeview> {
                         const Center(child: Text('Erro ao carregar produtos'))
                       else
                         Expanded(
-                          child: GridView.builder(
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: kMediumSize,
-                              mainAxisSpacing: kMediumSize,
-                              childAspectRatio: 0.5,
-                            ),
+                          child: ListView.builder(
                             itemCount: _viewModel.products.length,
                             itemBuilder: (context, index) {
                               final product = _viewModel.products[index];
