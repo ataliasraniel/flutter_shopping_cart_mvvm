@@ -51,7 +51,6 @@ class CartViewModel with ChangeNotifier {
     try {
       checkoutResponse = await _cartService.proceedToCheckout();
       _checkoutState = CheckoutState.success;
-      clearCart();
       notifyListeners();
       return true;
     } catch (e) {

@@ -52,6 +52,7 @@ class CartService with ChangeNotifier {
 
   Future<CheckoutResponseModel> proceedToCheckout() async {
     final result = await _checkoutApi.processCheckout(_items);
+    clearCart();
     return result;
   }
 }

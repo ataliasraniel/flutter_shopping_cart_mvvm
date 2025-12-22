@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/entities/models/response/checkout_response_model.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/theme/app_spacing.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/widgets/buttons/primary_button.dart';
 
 class OrderCompletedView extends StatelessWidget {
@@ -12,35 +13,84 @@ class OrderCompletedView extends StatelessWidget {
       canPop: false,
       child: Scaffold(
         appBar: AppBar(title: const Text('Pedido Finalizado'), automaticallyImplyLeading: false, centerTitle: true),
-        body: Center(
+        body: Padding(
+          padding: kDefaultPadding,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(color: Colors.green, shape: BoxShape.circle),
-                child: const Icon(Icons.check, color: Colors.white, size: 60),
+            crossAxisAlignment: .start,
+            children: <Widget>[
+              Text('Seu pedido - ${checkoutResponse.orderId}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+
+              Expanded(
+                child: ListView.builder(
+                  itemCount: checkoutResponse.data.items.length,
+                  itemBuilder: (_, index) {
+                    final item = checkoutResponse.data.items[index];
+                    return Container(
+                      child: Row(
+                        children: <Widget>[
+                          Image.network(item.image, width: 60, height: 60, fit: BoxFit.cover),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(item.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                                const SizedBox(height: 4),
+                                Text('Quantidade: ${item.quantity}', style: const TextStyle(fontSize: 14, color: Colors.grey)),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            'R\$ ${(item.price * item.quantity).toStringAsFixed(2)}',
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
-              const SizedBox(height: 32),
-              const Text(
-                'Pedido Finalizado com Sucesso!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: kTinySize,
+
+                children: <Widget>[
+                  //resumo do pedido>subtotal,frete, total
+                  //Resumo do pedido
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Resumo do Pedido', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const Text('Subtotal:', style: TextStyle(fontSize: 16)),
+                      Text('R\$ ${checkoutResponse.data.subtotal.toStringAsFixed(2)}', style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const Text('Frete:', style: TextStyle(fontSize: 16)),
+                      Text('R\$ ${checkoutResponse.data.frete.toStringAsFixed(2)}', style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                  const SizedBox(height: kMediumSize),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const Text('Total:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                      Text(
+                        'R\$ ${(checkoutResponse.data.subtotal + checkoutResponse.data.frete).toStringAsFixed(2)}',
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-              const Text(
-                'Obrigado pela sua compra.\nVocê receberá um email de confirmação em breve.',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 48),
-              PrimaryButton(
-                label: 'Novo Pedido',
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
+              const SizedBox(height: kLargeSize),
+              PrimaryButton(isFullWidth: true, label: 'Novo Pedido', onPressed: () {}),
             ],
           ),
         ),

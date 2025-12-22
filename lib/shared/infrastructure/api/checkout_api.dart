@@ -10,6 +10,23 @@ class CheckoutApi {
     if (random % 2 == 0) {
       throw Exception('Estamos fora do ar, desculpe =(.');
     }
-    return CheckoutResponseModel(message: 'Checkout realizado com sucesso!', success: true, orderId: random);
+    final mockedResponse = {
+      'message': 'Checkout realizado com sucesso!',
+      'success': true,
+      'orderId': random,
+      'data': {
+        'frete': 12.50,
+        'items': items
+            .map(
+              (item) => {
+                'product': {'title': item.product.title, 'image': item.product.image, 'price': item.product.price},
+                'quantity': item.quantity,
+              },
+            )
+            .toList(),
+        'subtotal': items.fold(0.0, (sum, item) => sum + (item.product.price * item.quantity)),
+      },
+    };
+    return CheckoutResponseModel.fromJson(mockedResponse);
   }
 }
