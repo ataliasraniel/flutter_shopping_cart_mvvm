@@ -52,6 +52,8 @@ lib/
 
 ## 🚀 Instruções de Build/Run
 
+### Recomendo rodar em windows, já que é mais direto ao ponto e não passa por compilação android.
+
 ### 1. Pré-requisitos
 Certifique-se de ter o Flutter instalado:
 ```bash
