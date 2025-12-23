@@ -29,8 +29,8 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void clearCart() {
-    _cartService.clearCart();
+  Future<void> clearCart() async {
+    await _cartService.clearCart();
   }
 
   Future<void> fetchProducts() async {
@@ -61,12 +61,12 @@ class HomeViewModel with ChangeNotifier {
     await fetchProducts();
   }
 
-  void addProductToCart(Product product) {
-    _cartService.addItem(CartItem(productId: product.id, quantity: 1, product: product));
+  Future<void> addProductToCart(Product product) async {
+    await _cartService.addItem(CartItem(productId: product.id, quantity: 1, product: product));
   }
 
-  void decreaseProductFromCart(Product product) {
-    _cartService.decreaseItemByQuantity(CartItem(productId: product.id, quantity: 1, product: product));
+  Future<void> decreaseProductFromCart(Product product) async {
+    await _cartService.decreaseItemByQuantity(CartItem(productId: product.id, quantity: 1, product: product));
   }
 
   bool hasCurrentItemInCart(int productId) {

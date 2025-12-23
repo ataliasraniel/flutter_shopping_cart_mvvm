@@ -27,20 +27,36 @@ class CartViewModel with ChangeNotifier, ApiErrorHandlerMixin {
 
   double get total => subtotal;
 
-  void addProductToCart(Product product) {
-    _cartService.addItem(CartItem(productId: product.id, quantity: 1, product: product));
+  Future<void> addProductToCart(Product product) async {
+    try {
+      await _cartService.addItem(CartItem(productId: product.id, quantity: 1, product: product));
+    } catch (e) {
+      _errorMessage = handleApiError(e);
+    }
   }
 
-  void decreaseProductFromCart(Product product) {
-    _cartService.decreaseItemByQuantity(CartItem(productId: product.id, quantity: 1, product: product));
+  Future<void> decreaseProductFromCart(Product product) async {
+    try {
+      await _cartService.decreaseItemByQuantity(CartItem(productId: product.id, quantity: 1, product: product));
+    } catch (e) {
+      _errorMessage = handleApiError(e);
+    }
   }
 
-  void removeItemFromCart(int productId) {
-    _cartService.removeItem(productId);
+  Future<void> removeItemFromCart(int productId) async {
+    try {
+      await _cartService.removeItem(productId);
+    } catch (e) {
+      _errorMessage = handleApiError(e);
+    }
   }
 
-  void clearCart() {
-    _cartService.clearCart();
+  Future<void> clearCart() async {
+    try {
+      await _cartService.clearCart();
+    } catch (e) {
+      _errorMessage = handleApiError(e);
+    }
   }
 
   Future<bool> checkout() async {

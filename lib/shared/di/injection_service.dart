@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_shopping_cart_mvvm/modules/cart/cart_view_model.dart';
 import 'package:flutter_shopping_cart_mvvm/modules/home/home_view_model.dart';
+import 'package:flutter_shopping_cart_mvvm/shared/infrastructure/api/cart_api.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/infrastructure/api/checkout_api.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/network/http_service.dart';
 import 'package:flutter_shopping_cart_mvvm/shared/services/cart_service.dart';
@@ -14,8 +15,9 @@ void setupInjections() async {
   log("Starting registrations...");
   injector.registerSingleton<HttpService>(HttpService());
   injector.registerSingleton<CheckoutApi>(CheckoutApi());
+  injector.registerSingleton<CartApi>(CartApi(injector<HttpService>()));
   injector.registerSingleton<ProductApi>(ProductApi(injector<HttpService>()));
-  injector.registerSingleton<CartService>(CartService(injector<CheckoutApi>()));
+  injector.registerSingleton<CartService>(CartService(injector<CheckoutApi>(), injector<CartApi>()));
   //factories
   injector.registerFactory(() => HomeViewModel(injector<ProductApi>(), injector<CartService>()));
   injector.registerFactory(() => CartViewModel(injector<CartService>()));
